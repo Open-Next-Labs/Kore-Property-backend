@@ -1,22 +1,28 @@
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import logger from '../helpers/logger';
 
-dotenv.config()
-const URL = process.env.URL || 'mongodb://localhost/NODE_APP'
+const { NODE_ENV, DATABASE_URL, DATABASE_URL_TEST } = process.env;
 
+const envs = {
+  test: DATABASE_URL_TEST,
+  development: DATABASE_URL,
+  production: DATABASE_URL,
+};
 
-mongoose.connect(URL, {
-    useNewUrlParser: true,
-    useCreateIndex: true
-})
+const connect = async () => {
+  try {
+    await mongoose.connect(envs[NODE_ENV] || envs.development, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    logger.info('Database connected');
+  } catch (error) {
+    logger.error(error);
+  }
+};
 
-const db = mongoose.connection
-
-
-db.on('error', () => {
-    console.error.bind('Error in db connection')
-})
-
-db.on('open', () => {
-    console.log('Connection established')
-})
+export default {
+  connect,
+};

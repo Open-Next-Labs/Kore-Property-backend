@@ -1,14 +1,48 @@
 import express from 'express';
 import cors from 'cors';
-import routers from './routes'
+import db from './config/connections';
+import statusCodes from './constants/statusCodes';
+import jsonResponse from './helpers/jsonResponse';
+import joiErrors from './middlewares/joiErrors';
+import routers from './routes';
+
+db.connect();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(routers);
-app.use('*', (req, res) =>
-    res.status(404).json({
-        message: 'API endpoint not found!'
-    })
-);
+
+app.use(joiErrors());
+
+// Application routing
+app.get('/', (req, res) => {
+  return res.status(statusCodes.OK).json({
+    status: statusCodes.OK,
+    res,
+    message: 'Rest API',
+  });
+});
+
+// Catch wrong routes
+app.use((req, res, next) => {
+  const error = new Error('Not found');
+  error.status = statusCodes.NOT_FOUND;
+  next(error);
+});
+
+// Catch all errors
+app.use((error, req, res) => {
+  const status = error.status || statusCodes.INTERNAL_SERVER_ERROR;
+  const message = error.message || 'Something went wrong. Please try again';
+  return jsonResponse({
+    res,
+    status,
+    message,
+  });
+});
+
 export default app;

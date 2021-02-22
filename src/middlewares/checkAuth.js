@@ -14,7 +14,7 @@ const checkAuth = () => async (req, res, next) => {
     return jsonResponse({
       res,
       status: UNAUTHORIZED,
-      message: 'Unauthorized access',
+      message: 'Accès non autorisé',
     });
   }
 
@@ -24,7 +24,7 @@ const checkAuth = () => async (req, res, next) => {
         return jsonResponse({
           res,
           status: UNAUTHORIZED,
-          message: 'Session expired. Please login again',
+          message: 'La session a expirée. Authentifiez-vous svp',
         });
       }
 
@@ -33,7 +33,7 @@ const checkAuth = () => async (req, res, next) => {
       return jsonResponse({
         res,
         status: UNAUTHORIZED,
-        message: 'Invalid token',
+        message: 'Le token est invalide',
       });
     }
 
@@ -45,7 +45,7 @@ const checkAuth = () => async (req, res, next) => {
       return jsonResponse({
         res,
         status: UNAUTHORIZED,
-        message: 'Invalid token',
+        message: 'Le token est invalide',
       });
     }
 

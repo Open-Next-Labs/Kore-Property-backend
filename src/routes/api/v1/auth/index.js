@@ -16,7 +16,7 @@ authRouter.post(
   asyncHandler(AuthController.signup),
 );
 
-// authRouter.post('/login', loginSchema, asyncHandler(AuthController.login));
+authRouter.post('/login', loginSchema, asyncHandler(AuthController.login));
 
 // authRouter.post(
 //   '/password-reset/init',

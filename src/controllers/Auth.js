@@ -24,7 +24,7 @@ class AuthCtrl {
         token: sign(
           {
             id: user._id,
-            email: user.email,
+            phone: user.phone,
             tokenType: 'access',
           },
           process.env.JWT_SECRET,
@@ -34,7 +34,38 @@ class AuthCtrl {
   }
 
   static async login(req, res) {
-    return;
+    const existingRecord = await User.findOne({
+      phone: req.body.phone,
+    });
+
+    if (
+      existingRecord &&
+      compareSync(req.body.password, existingRecord.password)
+    ) {
+      return jsonResponse({
+        status: statusCodes.OK,
+        res,
+        data: {
+          ...existingRecord._doc,
+          password: undefined,
+          tokenType: 'access',
+          token: sign(
+            {
+              id: existingRecord._id,
+              phone: existingRecord.phone,
+              tokenType: 'access',
+            },
+            process.env.JWT_SECRET,
+          ),
+        },
+      });
+    }
+
+    return jsonResponse({
+      status: statusCodes.NOT_FOUND,
+      res,
+      message: 'Numéro de téléphone ou mot de passe incorrect',
+    });
   }
 }
 

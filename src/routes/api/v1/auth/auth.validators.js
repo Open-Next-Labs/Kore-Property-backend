@@ -39,12 +39,12 @@ export const signupSchema = celebrate({
   }),
 });
 
-// export const loginSchema = celebrate({
-//   body: Joi.object().keys({
-//     email: email.required(),
-//     password: passwordSchema.required(),
-//   }),
-// });
+export const loginSchema = celebrate({
+  body: Joi.object().keys({
+    phone: phone.required(),
+    password: passwordSchema.required(),
+  }),
+});
 
 // export const initPasswordResetSchema = celebrate({
 //   body: Joi.object().keys({

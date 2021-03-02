@@ -46,15 +46,15 @@ export const loginSchema = celebrate({
   }),
 });
 
-// export const initPasswordResetSchema = celebrate({
-//   body: Joi.object().keys({
-//     phone: phone.required(),
-//   }),
-// });
+export const initPasswordResetSchema = celebrate({
+  body: Joi.object().keys({
+    phone: phone.required(),
+  }),
+});
 
-// export const completePasswordResetSchema = celebrate({
-//   body: Joi.object().keys({
-//     password: passwordSchema.required(),
-//     token: Joi.string().required(),
-//   }),
-// });
+export const completePasswordResetSchema = celebrate({
+  body: Joi.object().keys({
+    token: Joi.string().required(),
+    password: passwordSchema.required(),
+  }),
+});

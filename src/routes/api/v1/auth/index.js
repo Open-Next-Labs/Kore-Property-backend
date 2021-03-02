@@ -1,6 +1,11 @@
 import express from 'express';
 import AuthController from '../../../../controllers/Auth';
-import { loginSchema, signupSchema } from './auth.validators';
+import {
+  loginSchema,
+  signupSchema,
+  initPasswordResetSchema,
+  completePasswordResetSchema,
+} from './auth.validators';
 
 import asyncHandler from '../../../../middlewares/asyncHandler';
 import checkPhoneNumber from '../../../../middlewares/checkPhoneNumber';
@@ -18,18 +23,17 @@ authRouter.post(
 
 authRouter.post('/login', loginSchema, asyncHandler(AuthController.login));
 
-// authRouter.post(
-//   '/password-reset/init',
-//   initPasswordResetSchema,
+authRouter.post(
+  '/password-reset/init',
+  initPasswordResetSchema,
+  asyncHandler(AuthController.initiateResetPassword),
+);
 
-//   asyncHandler(AuthController.initiateResetPassword),
-// );
-
-// authRouter.post(
-//   '/password-reset/complete',
-//   completePasswordResetSchema,
-//   asyncHandler(AuthController.completeResetPassword),
-// );
+authRouter.post(
+  '/password-reset/complete',
+  completePasswordResetSchema,
+  asyncHandler(AuthController.completeResetPassword),
+);
 
 // authRouter.post(
 //   '/confirm-email/:token',

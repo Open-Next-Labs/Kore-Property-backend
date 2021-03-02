@@ -22,20 +22,15 @@ app.use(joiErrors());
 app.get('/', (req, res) => {
   return res.status(statusCodes.OK).json({
     status: statusCodes.OK,
-    res,
     message: 'Rest API',
   });
 });
 
 // Catch wrong routes
-app.use((req, res, next) => {
+app.use('*', (req, res, next) => {
   const error = new Error('Not found');
   error.status = statusCodes.NOT_FOUND;
-  next(error);
-});
 
-// Catch all errors
-app.use((error, req, res) => {
   const status = error.status || statusCodes.INTERNAL_SERVER_ERROR;
   const message = error.message || 'Something went wrong. Please try again';
   return jsonResponse({

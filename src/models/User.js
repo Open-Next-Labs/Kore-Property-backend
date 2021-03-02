@@ -37,6 +37,7 @@ const UserSchema = new Schema({
   },
   resetToken: {
     type: String,
+    default: null,
   },
   createdAt: {
     type: Date,
